@@ -5,8 +5,6 @@ name: Deploy to GHCR ubuntu-22
 on:
   push:
     branches: ['release']
-  paths:
-      - '.github/workflows/cont_robot_PR_U22.yaml'
   workflow_call:
 
 env:
