@@ -1,0 +1,49 @@
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+
+name: Deploy to GHCR
+
+on:
+  push:
+    branches: ['release']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04 # ubuntu-latest (22.04)
+
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Checkout private repositories
+        uses: actions/checkout@v3
+        with:
+          repository: ashbabu/continuum_robot
+          path: catkin_ws/src/continuum_robot
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ref: "release"
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/ashbabu/continuum_robot:latest
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+
+#        run: |
+#          docker build . --tag ghcr.io/ashbabu/continuum_robot:latest
+#          docker push ghcr.io/ashbabu/continuum_robot:latest
