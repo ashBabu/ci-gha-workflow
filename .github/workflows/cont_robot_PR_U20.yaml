@@ -5,6 +5,7 @@ name: Deploy to GHCR
 on:
   push:
     branches: ['release']
+  workflow_call:
 
 env:
   REGISTRY: ghcr.io
