@@ -41,7 +41,7 @@ jobs:
           context: .
           file: "Dockerfile"
           push: true
-          tags: ghcr.io/ashbabu/continuum_robot:latest
+          tags: ghcr.io/ashbabu/continuum_robot_ROS1:latest
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
