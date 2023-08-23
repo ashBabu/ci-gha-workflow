@@ -4,7 +4,6 @@ name: Deploy to GHCR ubuntu-20
 
 on:
   push:
-    branches: ['release']
   workflow_call:
 
 env:
@@ -27,7 +26,7 @@ jobs:
           repository: ashbabu/continuum_robot
           path: catkin_ws/src/continuum_robot
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: "release"
+          ref: "ros1-legacy"
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2
@@ -40,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: "DockerfileU20"
+          file: "Dockerfile"
           push: true
           tags: ghcr.io/ashbabu/continuum_robot:latest
           secrets: |
