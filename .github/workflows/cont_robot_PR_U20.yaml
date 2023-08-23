@@ -40,6 +40,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          file: "DockerfileU20"
           push: true
           tags: ghcr.io/ashbabu/continuum_robot:latest
           secrets: |
